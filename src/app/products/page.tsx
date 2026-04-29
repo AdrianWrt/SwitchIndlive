@@ -33,11 +33,10 @@ export default function ProductsPage() {
     fetchProducts();
   }, []);
 
-  // 🔥 auto search saat user ngetik
   useEffect(() => {
     const delay = setTimeout(() => {
       fetchProducts(search);
-    }, 300); // debounce
+    }, 300); 
 
     return () => clearTimeout(delay);
   }, [search]);
@@ -46,7 +45,6 @@ export default function ProductsPage() {
 
   return (
     <div className="p-6">
-      {/* 🔍 Search Input */}
       <input
         type="text"
         placeholder="Search products..."
@@ -55,7 +53,6 @@ export default function ProductsPage() {
         className="border p-2 rounded w-full mb-4"
       />
 
-      {/* Produk */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
       {products.map((p) => (
       <ProductCard
