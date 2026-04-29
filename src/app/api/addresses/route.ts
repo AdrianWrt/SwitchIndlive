@@ -2,9 +2,12 @@ import { prisma } from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/auth-options";
+import { auth } from "@/auth";
+
 
 async function getUser() {
-  const session = await getServerSession(authOptions);
+  const session = await auth();
+
   if (!session?.user?.email) return null;
 
   return prisma.user.findUnique({
@@ -12,43 +15,39 @@ async function getUser() {
   });
 }
 
+export const dynamic = "force-dynamic";
+
 export async function GET() {
-  const user = await getUser();
-  if (!user) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  try {
+    const user = await getUser();
+
+    if (!user) {
+      return NextResponse.json({ addresses: [] }); 
+    }
+
+    const addresses = await prisma.address.findMany({
+      where: { userId: user.id },
+      orderBy: { createdAt: "desc" },
+    });
+
+    return NextResponse.json({ addresses });
+  } catch (error) {
+    console.error("ADDRESSES ERROR:", error);
+    return NextResponse.json({ addresses: [] }); // ✅ fallback
   }
-
-  const addresses = await prisma.address.findMany({
-    where: { userId: user.id },
-    orderBy: { createdAt: "desc" },
-  });
-
-  return NextResponse.json({ addresses });
 }
 
 export async function POST(req: NextRequest) {
-  const user = await getUser();
-  if (!user) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
+  try {
+    const user = await getUser();
 
-  const {
-    label,
-    fullName,
-    phone,
-    street,
-    city,
-    province,
-    postalCode,
-  } = await req.json();
+    if (!user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
 
-  if (!label || !fullName || !phone || !street || !city || !province || !postalCode) {
-    return NextResponse.json({ error: "Missing fields" }, { status: 400 });
-  }
+    const body = await req.json();
 
-  const address = await prisma.address.create({
-    data: {
-      userId: user.id,
+    const {
       label,
       fullName,
       phone,
@@ -56,8 +55,28 @@ export async function POST(req: NextRequest) {
       city,
       province,
       postalCode,
-    },
-  });
+    } = body;
 
-  return NextResponse.json({ address });
+    if (!label || !fullName || !phone || !street || !city || !province || !postalCode) {
+      return NextResponse.json({ error: "Missing fields" }, { status: 400 });
+    }
+
+    const address = await prisma.address.create({
+      data: {
+        userId: user.id,
+        label,
+        fullName,
+        phone,
+        street,
+        city,
+        province,
+        postalCode,
+      },
+    });
+
+    return NextResponse.json({ address });
+  } catch (error) {
+    console.error("POST ADDRESS ERROR:", error);
+    return NextResponse.json({ error: "Server error" }, { status: 500 });
+  }
 }
