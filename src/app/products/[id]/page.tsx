@@ -10,10 +10,10 @@ export default async function ProductPage({
   params,
 
 }: {
-  params: Promise<{ id: string }>;
+  params: { id: string };
 }) {
 
-  const { id } = await params
+  const { id } = params
 
   if (!id) {
     return (
@@ -30,7 +30,7 @@ export default async function ProductPage({
   const isNumericId = !isNaN(numericId);
 
   const product = await prisma.product.findUnique({
-    where: isNumericId ? { id: numericId } : { id },
+    where: { id },
   });
 
   if (!product) {
@@ -44,5 +44,10 @@ export default async function ProductPage({
     );
   }
 
-  return <ProductDetailsClient product={product} />;
+  const safeProduct = {
+    ...product,
+    image: product.image || "/no-image.png",
+  };
+
+  return <ProductDetailsClient product={safeProduct} />;
 }

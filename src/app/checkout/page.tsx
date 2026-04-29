@@ -1,7 +1,7 @@
 import CheckoutClient from "./CheckoutClient";
 
 async function getAddresses() {
-  const res = await fetch("http://localhost:3000/api/addresses", {
+  const res = await fetch("/api/addresses", {
     cache: "no-store",
   });
 
@@ -12,7 +12,5 @@ async function getAddresses() {
 }
 
 export default async function CheckoutPage() {
-  const addresses = await getAddresses();
-
-  return <CheckoutClient addresses={addresses} />;
+  return <CheckoutClient/>;
 }

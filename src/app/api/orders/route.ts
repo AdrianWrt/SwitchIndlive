@@ -74,13 +74,22 @@ export async function POST(req: NextRequest) {
   const snap = new midtransClient.Snap({
     isProduction: false,
     serverKey: process.env.MIDTRANS_SERVER_KEY!,
+    clientKey: process.env.MIDTRANS_CLIENT_KEY!,
   });
 
   const address = await prisma.address.findUnique({
     where: { id: addressId },
   });
 
+  if (!address) {
+    return NextResponse.json(
+      { error: "Address not found" },
+      { status: 404 }
+    );
+  }
+
   const fullAddress = `${address.street}, ${address.city}, ${address.province}, ${address.postalCode}`;
+
   
   const midtrans = await snap.createTransaction({
     transaction_details: {
@@ -88,20 +97,12 @@ export async function POST(req: NextRequest) {
       gross_amount: total,
     },
 
-    item_details: items.map((i: any) => {
-      const product = products.find((p) => p.id === i.id);
-  
-      if (!product) {
-        throw new Error("Product not found");
-      }
-  
-      return {
-        id: product.id,
-        name: product.name,     // ✅ dari DB
-        price: product.price,   // ✅ dari DB
-        quantity: i.quantity,
-      };
-    }),
+    item_details: items.map((i: any) => ({
+      id: i.id,
+      price: i.price,
+      quantity: i.quantity,
+      name: i.name,
+    })),
   
     customer_details: {
       first_name: user?.name || "Customer",
@@ -111,12 +112,9 @@ export async function POST(req: NextRequest) {
         first_name: address?.fullName,
         phone: address?.phone,
         address: fullAddress || "No address",
-        city: "Jakarta",          // 🔥 wajib isi
-        postal_code: "12345",     // 🔥 wajib isi
-        country_code: "IDN",      // 🔥 wajib isi
       },
     }
-  });
+  } as any);
 
 
   console.log("MIDTRANS:", midtrans);

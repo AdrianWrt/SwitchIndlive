@@ -18,7 +18,7 @@ export default async function EditProductPage({
   const isNumericId = !isNaN(numericId);
 
   const product = await prisma.product.findUnique({
-    where: isNumericId ? { id: numericId } : { id },
+    where: isNumericId ? { id: (await params).id } : { id },
   });
 
   if (!product) {

@@ -2,9 +2,10 @@
 
 import ProductCard from "@/components/ProductCard";
 import { useEffect, useState } from "react";
+import { Product } from "@prisma/client";
 
 export default function ProductsPage() {
-  const [products, setProducts] = useState([]);
+  const [products, setProducts] = useState<Product[]>([]);
   const [search, setSearch] = useState("");
 
   <main className="p-8 bg-gray-900 min-h-screen text-white">
@@ -17,7 +18,6 @@ export default function ProductsPage() {
       <ProductCard
         key={p.id}
         product={p}
-        className="transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-2xl rounded-xl bg-gray-800"
       />
     ))}
   </div>
@@ -26,7 +26,7 @@ export default function ProductsPage() {
   async function fetchProducts(query = "") {
     const res = await fetch(`/api/products?search=${query}`);
     const data = await res.json();
-    setProducts(data.products);
+    setProducts(data.products || []);
   }
 
   useEffect(() => {
@@ -61,10 +61,9 @@ export default function ProductsPage() {
       <ProductCard
         key={p.id}
         product={p}
-        className="transform hover:scale-105 transition-all duration-300 shadow-lg hover:shadow-2xl rounded-xl bg-gray-800"
       />
     ))}
-  </div>
+      </div>
     </div>
   );
 }

@@ -7,8 +7,8 @@ interface Product {
   id: string;
   name: string;
   price: number;
-  description: string;
-  image?: string;
+  description: string  | null;
+  image: string | null;
 }
 
 export default function EditProductForm({ product }: { product: Product }) {
@@ -84,7 +84,7 @@ export default function EditProductForm({ product }: { product: Product }) {
     <div>
         <label className="block mb-2 font-semibold">Description</label>
         <textarea
-        value={description}
+        value={description || ""}
         onChange={(e) => setDescription(e.target.value)}
         rows={4}
         className="w-full p-3 rounded bg-gray-800 border border-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"

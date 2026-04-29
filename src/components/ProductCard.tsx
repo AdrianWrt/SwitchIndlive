@@ -5,10 +5,10 @@ import Image from "next/image";
 import { useCart } from "@/context/CartContext";
 
 type Product = {
-  id: number;
+  id: string; // ✅ FIX
   name: string;
   price: number;
-  image: string;
+  image: string | null; // ✅ karena dari Prisma
 };
 
 export default function ProductCard({ product }: { product: Product }) {
@@ -19,7 +19,7 @@ export default function ProductCard({ product }: { product: Product }) {
       <Link href={`/products/${product.id}`}>
         <div className="relative h-48 w-full cursor-pointer overflow-hidden rounded-t-xl group">
           <Image
-            src={product.image}
+            src={product.image || "/no-image.png"}
             alt={product.name}
             fill
             className="object-cover transition-transform duration-300 group-hover:scale-105"
@@ -37,7 +37,13 @@ export default function ProductCard({ product }: { product: Product }) {
       </Link>
 
       <button
-        onClick={() => addToCart({ ...product, quantity: 1})}
+        onClick={() =>
+          addToCart({
+            ...product,
+            image: product.image || "/no-image.png", // ✅ FIX
+            quantity: 1,
+          })
+        }
         className="m-4 w-[calc(100%-2rem)] bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-lg transition-all transform hover:scale-105"
       >
         Add to Cart

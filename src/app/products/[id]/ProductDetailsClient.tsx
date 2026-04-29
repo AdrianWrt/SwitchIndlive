@@ -6,7 +6,7 @@ import AddToCartButton from "./AddToCartButton";
 interface Product {
   id: string;
   name: string;
-  description?: string;
+  description?: string | null;
   price: number;
   image: string;
 }
@@ -19,7 +19,7 @@ export default function ProductDetailsClient({ product }: { product: Product }) 
       <div className="max-w-6xl mx-auto flex flex-col md:flex-row gap-8">
         <div className="md:w-1/2 bg-gray-800 rounded-lg shadow-lg overflow-hidden">
           <img
-            src={product.image}
+            src={product.image || "/no-product.png"}
             alt={product.name}
             className="w-full h-full object-cover"
           />

@@ -8,5 +8,10 @@ export default async function HomePage() {
     orderBy: { createdAt: "desc" },
   });
 
-  return <HomePageClient products={products} />;
+  const safeProducts = products.map((p) => ({
+    ...p,
+    image: p.image || "/no-image.png", // ✅ FIX
+  }));
+
+  return <HomePageClient products={safeProducts} />;
 }

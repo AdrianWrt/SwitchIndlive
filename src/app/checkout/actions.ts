@@ -7,7 +7,7 @@ interface CartItem {
   quantity: number;
 }
 
-export async function placeOrder(cartItems: CartItem[]) {
+export async function placeOrder(addressId : string, cartItems: CartItem[]) {
   const session = await getServerSession(authOptions);
   if (!session?.user?.email) throw new Error("Not authenticated");
 
