@@ -7,8 +7,8 @@ interface Product {
   id: string;
   name: string;
   price: number;
-  description: string  | null;
   image: string | null;
+  description: string | null;
 }
 
 export default function EditProductForm({ product }: { product: Product }) {

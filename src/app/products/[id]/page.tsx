@@ -2,18 +2,12 @@ import { prisma } from "@/lib/prisma";
 import ProductDetailsClient from "./ProductDetailsClient";
 import Link from "next/link";
 
-interface ProductPageProps {
-  params: { id: string };
-}
-
 export default async function ProductPage({
   params,
-
 }: {
   params: { id: string };
 }) {
-
-  const { id } = params
+  const id = params.id;
 
   if (!id) {
     return (
@@ -25,9 +19,6 @@ export default async function ProductPage({
       </main>
     );
   }
-
-  const numericId = Number(id);
-  const isNumericId = !isNaN(numericId);
 
   const product = await prisma.product.findUnique({
     where: { id },
@@ -46,7 +37,8 @@ export default async function ProductPage({
 
   const safeProduct = {
     ...product,
-    image: product.image || "/no-image.png",
+    image: product.image ?? "",
+    description: product.description ?? "",
   };
 
   return <ProductDetailsClient product={safeProduct} />;
