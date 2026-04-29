@@ -66,14 +66,14 @@ export default async function AdminOrdersPage() {
                     <li key={item.id} className="flex justify-between">
                       <span>{item.name}</span>
                       <span>
-                        {item.quantity} × ${item.price.toFixed(2)}
+                        {item.quantity} × Rp {item.price.toFixed(2)}
                       </span>
                     </li>
                   ))}
                 </ul>
 
                 <p className="mt-4 text-right font-bold text-lg text-blue-400">
-                  Total: ${total.toFixed(2)}
+                  Total: Rp {total.toFixed(2)}
                 </p>
               </div>
             );

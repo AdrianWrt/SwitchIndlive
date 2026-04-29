@@ -23,15 +23,17 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Invalid items" }, { status: 400 });
     }
 
-    const grossAmount = items.reduce(
+    const rawTotal = items.reduce(
       (sum: number, item: any) => sum + item.price * item.quantity,
       0
     );
 
+    const total= Math.max(1, Math.round(rawTotal));
+
     const transaction = {
       transaction_details: {
         order_id: `ORDER-${Date.now()}`,
-        gross_amount: grossAmount,
+        gross_amount: total,
       },
       item_details: items.map((item: any) => ({
         id: item.id.toString(),

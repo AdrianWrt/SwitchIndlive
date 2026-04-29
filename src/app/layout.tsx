@@ -7,6 +7,7 @@ import CartBadge from "@/components/CartBadge";
 import AuthButton from "@/components/AuthButton";
 import Header from "@/components/Header";
 import Head from "next/head";
+import { SessionProvider } from "next-auth/react";
 
 
 
@@ -21,7 +22,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "SwitchInd",
+  title: "SwitchInd ",
   description: "E-Commerce App",
 };
 

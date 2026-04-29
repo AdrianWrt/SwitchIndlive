@@ -12,7 +12,7 @@ interface Product {
 }
 
 export default function ProductDetailsClient({ product }: { product: Product }) {
-  const [quantity, setQuantity] = useState(1);
+  const [quantity, setQuantity] = useState<number>(1);
 
   return (
     <main className="bg-gray-900 text-white min-h-screen p-8">
@@ -28,7 +28,7 @@ export default function ProductDetailsClient({ product }: { product: Product }) 
         <div className="md:w-1/2 flex flex-col gap-4">
           <h1 className="text-4xl font-bold">{product.name}</h1>
           <p className="text-gray-300">{product.description || "No description available."}</p>
-          <p className="text-2xl font-semibold text-blue-500">${product.price.toFixed(2)}</p>
+          <p className="text-2xl font-semibold text-blue-500">Rp {product.price.toFixed(2)}</p>
 
           <div className="flex items-center gap-4 mt-4">
             <label className="text-white font-semibold">Quantity:</label>

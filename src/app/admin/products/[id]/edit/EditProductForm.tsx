@@ -70,7 +70,7 @@ export default function EditProductForm({ product }: { product: Product }) {
     </div>
 
     <div>
-        <label className="block mb-2 font-semibold">Price ($)</label>
+        <label className="block mb-2 font-semibold">Price (Rp)</label>
         <input
         type="number"
         value={price}

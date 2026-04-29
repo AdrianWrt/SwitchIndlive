@@ -34,7 +34,7 @@ export default function CartPage() {
 
               <div className="flex-1 flex flex-col justify-center">
                 <h2 className="font-semibold text-lg">{item.name}</h2>
-                <p className="text-gray-400">${item.price.toFixed(2)} each</p>
+                <p className="text-gray-400">Rp {item.price.toFixed(2)} each</p>
               </div>
 
               <div className="flex items-center gap-2">
@@ -64,7 +64,7 @@ export default function CartPage() {
 
           {/* Total */}
           <div className="text-right text-2xl font-bold mt-6 text-blue-400">
-            Total: ${total.toFixed(2)}
+            Total: Rp {total.toFixed(2)}
           </div>
 
           {/* Checkout button */}

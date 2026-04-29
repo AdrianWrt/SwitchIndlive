@@ -32,12 +32,12 @@ export default function ProductCard({ product }: { product: Product }) {
 
         <div className="p-4">
           <h2 className="font-semibold text-lg mb-1">{product.name}</h2>
-          <p className="text-gray-400">${product.price.toFixed(2)}</p>
+          <p className="text-gray-400">Rp {product.price.toFixed(2)}</p>
         </div>
       </Link>
 
       <button
-        onClick={() => addToCart(product)}
+        onClick={() => addToCart({ ...product, quantity: 1})}
         className="m-4 w-[calc(100%-2rem)] bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-lg transition-all transform hover:scale-105"
       >
         Add to Cart

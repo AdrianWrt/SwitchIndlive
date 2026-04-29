@@ -7,7 +7,9 @@ import { SessionProvider } from "next-auth/react";
 export default function Providers({ children }: { children: ReactNode }) {
   return (
     <SessionProvider>
-      <CartProvider>{children}</CartProvider>
+      <CartProvider>
+        {children}
+      </CartProvider>
     </SessionProvider>
   );
 }

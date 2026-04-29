@@ -96,7 +96,7 @@ export default function HomePageClient({ products }: { products: Product[] }) {
 
             <div className="p-4 flex flex-col items-center">
                 <h3 className="text-xl font-semibold mb-2">{product.name}</h3>
-                <p className="text-gray-300 mb-4">${product.price.toFixed(2)}</p>
+                <p className="text-gray-300 mb-4">Rp {product.price.toFixed(2)}</p>
                 <Link
                 href={`/products/${product.id}`}
                 className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded-lg transition-all transform hover:scale-105"

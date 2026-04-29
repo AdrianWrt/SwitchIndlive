@@ -36,7 +36,7 @@ export default async function AdminProductsPage() {
 
             <div className="p-4 flex flex-col flex-1">
               <h2 className="font-semibold text-lg mb-2">{product.name}</h2>
-              <p className="text-gray-400 mb-4">${product.price.toFixed(2)}</p>
+              <p className="text-gray-400 mb-4">Rp {product.price.toFixed(2)}</p>
 
               <div className="mt-auto flex justify-between gap-2">
                 <Link

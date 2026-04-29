@@ -1,47 +1,123 @@
-"use client";
+"use client"
+
+import { useEffect, useState } from "react";
 import { useCart } from "@/context/CartContext";
 
-console.log("Server Key:", process.env.MIDTRANS_SERVER_KEY);
-console.log("Client Key:", process.env.MIDTRANS_CLIENT_KEY);
-
+type Address = {
+  id: string;
+  label: string;
+  fullName: string;
+  phone: string;
+  street: string;
+  city: string;
+  province: string;
+  postalCode: string;
+};
 
 export default function CheckoutClient() {
   const { items, clearCart } = useCart();
+  const [addresses, setAddresses] = useState<Address[]>([]);
+  const [selectedAddress, setSelectedAddress] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch("/api/addresses")
+      .then((r) => r.json())
+      .then((d) => setAddresses(d.addresses || []))
+      .finally(() => setLoading(false));
+  }, []);
 
   async function handleCheckout() {
-    try {
-      const res = await fetch("/api/payment", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ items }),
-      });
+    if (!selectedAddress) {
+      alert("Please select a shipping address.");
+      return;
+    }
 
-      const data = await res.json();
+    const res = await fetch("/api/orders", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        addressId: selectedAddress,
+        items: items.map((i) => ({
+          id: i.id,
+          price: i.price,
+          quantity: i.quantity,
+        })),
+      }),
+    });
 
-      if (!res.ok) {
-        alert(data.error || "Payment failed");
-        return;
-      }
+    if (!res.ok) {
+      const text = await res.text();
+      alert(text || "Checkout failed");
+      return;
+    }
 
-      if (data.redirect_url) {
-        window.location.href = data.redirect_url;
-      } else {
-        alert("Payment session not created");
-      }
-    } catch (err: any) {
-      alert(err.message || "Payment failed");
+    const data = await res.json();
+    clearCart();
+    console.log("MIDTRANS URL:", data.redirect_url);
+
+    window.location.href = data.redirect_url;
+
+    if (!data.redirect_url) {
+      alert("Payment URL not found");
+      console.log(data);
+      return;
     }
   }
 
   return (
-    <main className="p-8 max-w-2xl mx-auto">
-      <h1 className="text-2xl font-bold mb-4">Checkout</h1>
+    <main className="p-8 max-w-3xl mx-auto text-white">
+      <h1 className="text-3xl font-bold mb-6">Checkout</h1>
+
+      <section className="mb-8">
+        <h2 className="text-xl font-semibold mb-3">Shipping Address</h2>
+
+        {loading ? (
+          <p>Loading addresses…</p>
+        ) : addresses.length === 0 ? (
+          <p>
+            You have no saved addresses.  
+            <a href="/account/addresses" className="text-blue-400 underline ml-1">
+              Add one here
+            </a>
+          </p>
+        ) : (
+          <div className="space-y-3">
+            {addresses.map((a) => (
+              <label
+                key={a.id}
+                className={`block border p-3 rounded cursor-pointer ${
+                  selectedAddress === a.id
+                    ? "border-blue-500 bg-gray-800"
+                    : "border-gray-700"
+                }`}
+              >
+                <input
+                  type="radio"
+                  name="address"
+                  className="mr-2"
+                  checked={selectedAddress === a.id}
+                  onChange={() => setSelectedAddress(a.id)}
+                />
+                <span className="font-semibold">{a.label}</span>
+                <div className="text-sm text-gray-300">
+                  {a.fullName} – {a.phone}
+                  <br />
+                  {a.street}, {a.city}, {a.province} {a.postalCode}
+                </div>
+              </label>
+            ))}
+          </div>
+        )}
+      </section>
+
       <button
         onClick={handleCheckout}
-        className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded"
+        className="w-full bg-blue-500 hover:bg-blue-600 py-3 rounded-lg font-semibold"
       >
-        Proceed to Payment
+        Place Order
       </button>
     </main>
   );
+
 }

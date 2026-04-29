@@ -8,6 +8,7 @@ import { useSession } from "next-auth/react";
 export default function Header() {
   const { items } = useCart();
   const { data: session } = useSession();
+  
 
   return (
     <header className="bg-gray-900 text-white p-4 flex justify-between items-center shadow-md sticky top-0 z-50">
@@ -48,4 +49,8 @@ export default function Header() {
       </nav>
     </header>
   );
+
+  
+
+
 }

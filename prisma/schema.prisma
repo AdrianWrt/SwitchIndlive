@@ -3,8 +3,9 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 model User {
@@ -14,6 +15,24 @@ model User {
   password String?
   role     String  @default("user")
   orders   Order[]
+  addresses Address[]
+}
+
+model Address {
+  id        String  @id @default(cuid())
+  userId    String
+  label     String
+  fullName  String
+  phone     String
+  street    String
+  city      String
+  province  String
+  postalCode  String
+  createdAt DateTime  @default(now())
+  
+  orders  Order[]
+
+  user    User @relation(fields: [userId], references: [id])
 }
 
 model Product {
@@ -35,6 +54,8 @@ model Order {
   status    String      @default("Pending")
   userId    String
   user      User        @relation(fields: [userId], references: [id])
+  addressId String
+  address   Address     @relation(fields: [addressId], references: [id])
   items     OrderItem[]
 }
 
@@ -49,3 +70,5 @@ model OrderItem {
   name      String 
   price     Float 
 }
+
+

@@ -30,24 +30,35 @@ export async function placeOrder(cartItems: CartItem[]) {
     throw new Error("Some products not found");
   }
 
+  if (!Array.isArray(cartItems) || cartItems.length === 0) {
+    throw new Error("cartItems is empty or invalid");
+  }
+
   const order = await prisma.order.create({
     data: {
       userId: user.id,
       status: "Pending",
+      addressId,
       items: {
         create: cartItems.map((item) => {
-          const product = products.find((p) => p.id === item.id)!;
+          const product = products.find((p) => p.id === item.id);
+  
+          if (!product) {
+            throw new Error(`Product not found for id: ${item.id}`);
+          }
+  
           return {
             productId: product.id,
             quantity: item.quantity,
-            name: product.name,   
+            name: product.name,
             price: product.price,
           };
         }),
       },
     },
-    include: { items: true, user: true }, 
+    include: { items: true, user: true },
   });
+  
 
   return order;
 }

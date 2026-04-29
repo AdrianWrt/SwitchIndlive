@@ -32,6 +32,15 @@ export default function UserMenu() {
                 My Orders
               </Link>
             </li>
+            <li>
+                <Link
+                href="/account/addresses"
+                className="block px-4 py-2 hover:bg-gray-700 text-white"
+                onClick={() => setOpen(false)}
+                >
+                    My Adresses
+                </Link>
+            </li>
             {session.user.role === "admin" && (
               <li>
                 <Link
