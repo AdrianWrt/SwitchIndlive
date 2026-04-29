@@ -5,14 +5,10 @@ export const dynamic = "force-dynamic";
 
 export async function PATCH(
   req: Request,
-  ctx: { params: { id: string } } | { params: Promise<{ id: string }> }
+  ctx: { params: { id: string } }
 ) {
   try {
-    const resolvedParams =
-      "then" in ctx.params ? await ctx.params : ctx.params;
-
-    const { id } = resolvedParams;
-
+    const { id } = ctx.params;
     const { status } = await req.json();
 
     if (!id || !status) {
