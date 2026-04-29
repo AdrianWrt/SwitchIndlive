@@ -1,10 +1,11 @@
 import { prisma } from "@/lib/prisma";
 import UpdateOrderStatus from "./UpdateOrderStatus";
-import { auth } from "@/auth";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/auth-options";
 import { redirect } from "next/navigation";
 
 export default async function AdminOrdersPage() {
-  const session = await auth();
+  const session = await getServerSession(authOptions);
 
   if (!session?.user?.email) redirect("/login");
 

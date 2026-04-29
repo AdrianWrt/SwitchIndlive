@@ -1,12 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
-import { auth } from "@/auth";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/auth-options";
 import { prisma } from "@/lib/prisma";
 import midtransClient from "midtrans-client";
 import { Chau_Philomene_One } from "next/font/google";
 
 
 export async function POST(req: NextRequest) {
-  const session = await auth();
+  const session = await getServerSession(authOptions);
   const body = await req.json();
 
   if (!session?.user?.email) {

@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
-import { auth } from "@/auth";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/auth-options";
 
 interface CartItem {
   id: string;
@@ -7,7 +8,7 @@ interface CartItem {
 }
 
 export async function placeOrder(addressId : string, cartItems: CartItem[]) {
-  const session = await auth();
+  const session = await getServerSession(authOptions);
   if (!session?.user?.email) throw new Error("Not authenticated");
 
   const user = await prisma.user.findUnique({

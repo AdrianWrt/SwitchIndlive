@@ -1,9 +1,10 @@
 import { prisma } from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
-import { auth } from "@/auth";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/auth-options";
 
 async function getUser() {
-  const session = await auth();
+  const session = await getServerSession(authOptions);
   if (!session?.user?.email) return null;
 
   return prisma.user.findUnique({
