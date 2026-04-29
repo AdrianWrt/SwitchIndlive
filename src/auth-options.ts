@@ -1,4 +1,4 @@
-import Google from "next-auth/providers/google";
+import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { NextAuthOptions } from "next-auth";
 import bcrypt from "bcryptjs";
@@ -8,8 +8,9 @@ export const authOptions: NextAuthOptions = {
   session: {
     strategy: "jwt",
   },
+
   providers: [
-    Google({
+    GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
     }),
@@ -20,6 +21,7 @@ export const authOptions: NextAuthOptions = {
         email: { label: "Email", type: "email" },
         password: { label: "Password", type: "password" },
       },
+
       async authorize(credentials) {
         if (!credentials?.email || !credentials.password) return null;
 
@@ -29,25 +31,45 @@ export const authOptions: NextAuthOptions = {
 
         if (!user || !user.password) return null;
 
-        const valid = await bcrypt.compare(credentials.password, user.password);
+        const valid = await bcrypt.compare(
+          credentials.password,
+          user.password
+        );
+
         if (!valid) return null;
 
-        return { id: user.id, name: user.name, email: user.email };
+        return {
+          id: user.id,
+          email: user.email,
+          name: user.name,
+        };
       },
     }),
   ],
+
   pages: {
     signIn: "/login",
   },
+
   callbacks: {
-    async session({ session }) {
-      if (session.user?.email) {
-        const user = await prisma.user.findUnique({
-          where: { email: session.user.email },
-          select: { role: true },
+    async jwt({ token, user }) {
+      if (user) {
+        const dbUser = await prisma.user.findUnique({
+          where: { email: user.email! },
+          select: { id: true, role: true },
         });
 
-        session.user.role = user?.role;
+        token.id = dbUser?.id;
+        token.role = dbUser?.role;
+      }
+
+      return token;
+    },
+
+    async session({ session, token }) {
+      if (session.user) {
+        session.user.id = token.id as string;
+        session.user.role = token.role as string;
       }
       return session;
     },
