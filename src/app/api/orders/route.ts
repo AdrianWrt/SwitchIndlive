@@ -107,7 +107,11 @@ export async function POST(req: NextRequest) {
         phone: address?.phone,
         address: fullAddress || "No address",
       },
-    }
+    },
+
+    callbacks: {
+      finish: `${process.env.NEXT_PUBLIC_BASE_URL}/checkout/success`,
+    },
   } as any);
 
   
