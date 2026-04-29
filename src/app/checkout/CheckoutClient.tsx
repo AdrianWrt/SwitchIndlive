@@ -48,8 +48,6 @@ export default function CheckoutClient() {
       }),
     });
 
-    await placeOrder(addressId, items);
-
 
     if (!res.ok) {
       const text = await res.text();
@@ -58,6 +56,7 @@ export default function CheckoutClient() {
     }
 
     const data = await res.json();
+    console.log("ORDER RESPONSE:", data);
     clearCart();
     console.log("MIDTRANS URL:", data.redirect_url);
 

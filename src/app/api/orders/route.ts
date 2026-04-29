@@ -87,7 +87,7 @@ export async function POST(req: NextRequest) {
   const midtrans = await snap.createTransaction({
     transaction_details: {
       order_id: order.id,
-      gross_amount: total,
+      gross_amount: Math.max(1, total),
     },
 
     item_details: items.map((i: any) => ({

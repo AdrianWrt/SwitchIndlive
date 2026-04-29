@@ -46,7 +46,7 @@ export async function POST(req: NextRequest) {
         first_name: session.user.name || "Customer",
         email: session.user.email,
       },
-      finish_redirect_url: `${process.env.NEXT_PUBLIC_BASE_URL}/orders`, // redirect after payment
+      finish_redirect_url: `${process.env.NEXT_PUBLIC_BASE_URL}/orders`,
     };
 
     const paymentResponse = await snap.createTransaction(transaction);
