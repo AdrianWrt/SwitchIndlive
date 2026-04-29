@@ -1,14 +1,15 @@
-import { NextResponse } from "next/server";
+import { NextResponse, NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
 
 export const dynamic = "force-dynamic";
 
 export async function PATCH(
-  req: Request,
-  ctx: { params: { id: string } }
+  req: NextRequest,
+  ctx: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { id } = ctx.params;
+    const { id } = await ctx.params;
+
     const { status } = await req.json();
 
     if (!id || !status) {
