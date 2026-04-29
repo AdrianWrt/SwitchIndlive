@@ -114,12 +114,13 @@ export async function POST(req: NextRequest) {
     redirect_url: midtrans.redirect_url,
   });
 
-} catch (err) {
+} catch (err: any) {
   console.error("❌ ERROR ORDER API:", err);
-    return NextResponse.json(
-      { error: "Internal Server Error" },
-      { status: 500 }
-    );
+
+  return NextResponse.json(
+    { error: err.message || "Internal Server Error" },
+    { status: 500 }
+  );
 }
   
 }
