@@ -54,30 +54,30 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async jwt({ token, user }) {
       if (user) {
-        const dbUser = await prisma.user.findUnique({
-          where: { email: user.email! },
-          select: { id: true, role: true },
-        });
-
-        token.id = dbUser?.id;
-        token.role = dbUser?.role;
+        token.id = user.id;
+        token.email = user.email;
+        token.role = user.role;
       }
-
       return token;
     },
 
-    async signIn({ user }) {
+    async signIn({ user, account }) {
       if (!user.email) return false;
-    
-      await prisma.user.upsert({
-        where: { email: user.email },
-        update: {},
-        create: {
-          email: user.email,
-          name: user.name ?? "",
-        },
-      });
-    
+  
+      if (account?.provider === "google") {
+        await prisma.user.upsert({
+          where: { email: user.email },
+          update: {
+            name: user.name ?? undefined,
+          },
+          create: {
+            email: user.email,
+            name: user.name ?? "",
+            password: null,
+          },
+        });
+      }
+  
       return true;
     },
 
