@@ -29,5 +29,5 @@ export default async function EditProductPage({
     );
   }
 
-  return <EditProductForm product={product} />;
+  return <EditProductForm product={product}/>;
 }

@@ -10,7 +10,7 @@ export default async function HomePage() {
 
   const safeProducts = products.map((p) => ({
     ...p,
-    image: p.image || "/no-image.png", // ✅ FIX
+    image: p.image || "/no-image.png",
   }));
 
   return <HomePageClient products={safeProducts} />;

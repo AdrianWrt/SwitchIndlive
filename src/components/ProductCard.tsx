@@ -5,10 +5,10 @@ import Image from "next/image";
 import { useCart } from "@/context/CartContext";
 
 type Product = {
-  id: string; // ✅ FIX
+  id: string; 
   name: string;
   price: number;
-  image: string | null; // ✅ karena dari Prisma
+  image: string | null; 
 };
 
 export default function ProductCard({ product }: { product: Product }) {
@@ -40,7 +40,7 @@ export default function ProductCard({ product }: { product: Product }) {
         onClick={() =>
           addToCart({
             ...product,
-            image: product.image || "/no-image.png", // ✅ FIX
+            image: product.image || "/no-image.png",
             quantity: 1,
           })
         }

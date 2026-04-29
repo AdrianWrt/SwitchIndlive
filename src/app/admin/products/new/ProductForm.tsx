@@ -6,7 +6,7 @@ export default function ProductForm() {
   const [name, setName] = useState("");
   const [price, setPrice] = useState<number>(0);
   const [image, setImage] = useState("");
-  const [description, setDescription] = useState(""); // ✅ new state
+  const [description, setDescription] = useState(""); 
 
   const [loading, setLoading] = useState(false);
 
@@ -18,7 +18,7 @@ export default function ProductForm() {
       const res = await fetch("/api/admin/products", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, price, image, description }), // ✅ include description
+        body: JSON.stringify({ name, price, image, description }), 
       });
 
       if (!res.ok) {
@@ -30,7 +30,7 @@ export default function ProductForm() {
       setName("");
       setPrice(0);
       setImage("");
-      setDescription(""); // ✅ reset description
+      setDescription("");
     } catch (err: any) {
       alert(err.message);
     } finally {

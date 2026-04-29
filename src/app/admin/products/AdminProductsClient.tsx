@@ -9,7 +9,7 @@ export type Product = {
   name: string;
   price: number;
   image: string;
-  description: string; // ✅ added
+  description: string;
 };
 
 export default function AdminProductsClient() {
