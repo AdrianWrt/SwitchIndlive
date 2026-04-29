@@ -10,7 +10,17 @@ export async function PATCH(
   try {
     const { id } = await ctx.params;
 
-    const { status } = await req.json();
+    let body;
+    try {
+      body = await req.json();
+    } catch {
+      return NextResponse.json(
+        { error: "Invalid body" },
+        { status: 400 }
+      );
+    }
+
+    const { status } = body;
 
     if (!id || !status) {
       return NextResponse.json(
@@ -27,6 +37,7 @@ export async function PATCH(
     return NextResponse.json({ ok: true });
   } catch (e) {
     console.error("PATCH ORDER ERROR:", e);
+
     return NextResponse.json(
       { error: "Failed to update status" },
       { status: 500 }
