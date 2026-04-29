@@ -82,7 +82,7 @@ export async function POST(req: NextRequest) {
     0
   );
 
-  const fullAddress = `${address.street}, ${address.city}, ${address.province}, ${address.postalCode}`;
+  const fullAddress = `${address.label}, ${address.street}, ${address.city}, ${address.province}, ${address.postalCode}`;
 
   
   const midtrans = await snap.createTransaction({
