@@ -18,12 +18,14 @@ export const {
     }),
   ],
   
+
   callbacks: {
     async session({ session, user }) {
       if (session.user) {
         (session.user as any).id = user.id;
         (session.user as any).role = user.role;
       }
+      console.log("SIGNIN USER:", user);
       return session;
     },
   },
