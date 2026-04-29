@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import midtransClient from "midtrans-client";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/auth-options";
+import { auth } from "@/auth";
 
 const snap = new midtransClient.Snap({
   isProduction: false,
@@ -11,7 +10,7 @@ const snap = new midtransClient.Snap({
 
 export async function POST(req: NextRequest) {
   try {
-    const session = await getServerSession(authOptions);
+    const session = await auth();
 
     if (!session?.user?.email) {
       return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
