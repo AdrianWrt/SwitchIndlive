@@ -1,26 +1,37 @@
 import { NextRequest, NextResponse } from "next/server";
 import midtransClient from "midtrans-client";
-import { getServerSession } from "next-auth";
-import { authOptions } from "@/auth-options";
+import { auth } from "@/auth";
 
-const snap = new midtransClient.Snap({
-  isProduction: false,
-  serverKey: process.env.MIDTRANS_SERVER_KEY!,
-  clientKey: process.env.MIDTRANS_CLIENT_KEY!,
-});
+export const dynamic = "force-dynamic";
 
 export async function POST(req: NextRequest) {
   try {
-    const session = await getServerSession(authOptions);
+    const session = await auth();
 
     if (!session?.user?.email) {
-      return NextResponse.json({ error: "Not authenticated" }, { status: 401 });
+      return NextResponse.json(
+        { error: "Not authenticated" },
+        { status: 401 }
+      );
     }
 
-    const { items } = await req.json();
+    let body;
+    try {
+      body = await req.json();
+    } catch {
+      return NextResponse.json(
+        { error: "Invalid body" },
+        { status: 400 }
+      );
+    }
+
+    const { items } = body;
 
     if (!items || !Array.isArray(items)) {
-      return NextResponse.json({ error: "Invalid items" }, { status: 400 });
+      return NextResponse.json(
+        { error: "Invalid items" },
+        { status: 400 }
+      );
     }
 
     const rawTotal = items.reduce(
@@ -28,7 +39,13 @@ export async function POST(req: NextRequest) {
       0
     );
 
-    const total= Math.max(1, Math.round(rawTotal));
+    const total = Math.max(1, Math.round(rawTotal));
+
+    const snap = new midtransClient.Snap({
+      isProduction: false,
+      serverKey: process.env.MIDTRANS_SERVER_KEY!,
+      clientKey: process.env.MIDTRANS_CLIENT_KEY!,
+    });
 
     const transaction = {
       transaction_details: {
@@ -46,14 +63,17 @@ export async function POST(req: NextRequest) {
         first_name: session.user.name || "Customer",
         email: session.user.email,
       },
-      finish_redirect_url: `${process.env.NEXT_PUBLIC_BASE_URL}/orders`, // redirect after payment
+      finish_redirect_url: `${process.env.NEXT_PUBLIC_BASE_URL}/orders`,
     };
 
     const paymentResponse = await snap.createTransaction(transaction);
 
     return NextResponse.json(paymentResponse);
   } catch (err: any) {
-    console.error(err);
-    return NextResponse.json({ error: err.message }, { status: 500 });
+    console.error("PAYMENT ERROR:", err);
+    return NextResponse.json(
+      { error: err.message || "Payment failed" },
+      { status: 500 }
+    );
   }
 }
