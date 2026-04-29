@@ -1,12 +1,14 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
+export const dynamic = "force-dynamic";
+
 export async function PATCH(
   req: Request,
-  ctx: { params: Promise<{ id: string }> }
+  ctx: { params: { id: string } }
 ) {
   try {
-    const { id } = await ctx.params;
+    const { id } = ctx.params;
     const { status } = await req.json();
 
     if (!id || !status) {
@@ -23,7 +25,7 @@ export async function PATCH(
 
     return NextResponse.json({ ok: true });
   } catch (e) {
-    console.error(e);
+    console.error("PATCH ORDER ERROR:", e);
     return NextResponse.json(
       { error: "Failed to update status" },
       { status: 500 }
