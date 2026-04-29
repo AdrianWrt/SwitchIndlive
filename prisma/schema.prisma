@@ -17,7 +17,7 @@ model User {
   orders   Order[]
   addresses Address[]
 
-    accounts Account[]
+  accounts Account[]
   sessions Session[]
 }
 
