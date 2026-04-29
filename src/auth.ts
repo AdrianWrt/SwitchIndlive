@@ -29,4 +29,10 @@ export const {
       return session;
     },
   },
+
+  events: {
+    async createUser(message) {
+      console.log("USER CREATED:", message);
+    },
+  },
 });
