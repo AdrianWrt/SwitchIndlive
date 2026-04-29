@@ -33,10 +33,6 @@ export async function POST(req: NextRequest) {
   });
 
   try {
-  const total = items.reduce(
-    (sum: number, i: any) => sum + i.price * i.quantity,
-    0
-  );
 
   const order = await prisma.order.create({
     data: {
@@ -81,20 +77,25 @@ export async function POST(req: NextRequest) {
     );
   }
 
+  const total = order.items.reduce(
+    (sum, item) => sum + item.price * item.quantity,
+    0
+  );
+
   const fullAddress = `${address.street}, ${address.city}, ${address.province}, ${address.postalCode}`;
 
   
   const midtrans = await snap.createTransaction({
     transaction_details: {
       order_id: order.id,
-      gross_amount: Math.max(1, total),
+      gross_amount: total,
     },
-
-    item_details: items.map((i: any) => ({
-      id: i.id,
-      price: i.price,
-      quantity: i.quantity,
-      name: i.name,
+    
+    item_details: order.items.map((item) => ({
+      id: item.productId,
+      price: item.price,
+      quantity: item.quantity,
+      name: item.name || "Product",
     })),
   
     customer_details: {
