@@ -33,7 +33,7 @@ export async function GET() {
     return NextResponse.json({ addresses });
   } catch (error) {
     console.error("ADDRESSES ERROR:", error);
-    return NextResponse.json({ addresses: [] }); // ✅ fallback
+    return NextResponse.json({ addresses: [] });
   }
 }
 
@@ -42,10 +42,21 @@ export async function POST(req: NextRequest) {
     const user = await getUser();
 
     if (!user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      return NextResponse.json(
+        { error: "Unauthorized" },
+        { status: 401 }
+      );
     }
 
-    const body = await req.json();
+    let body;
+    try {
+      body = await req.json();
+    } catch {
+      return NextResponse.json(
+        { error: "Invalid body" },
+        { status: 400 }
+      );
+    }
 
     const {
       label,
@@ -55,10 +66,21 @@ export async function POST(req: NextRequest) {
       city,
       province,
       postalCode,
-    } = body;
+    } = body || {};
 
-    if (!label || !fullName || !phone || !street || !city || !province || !postalCode) {
-      return NextResponse.json({ error: "Missing fields" }, { status: 400 });
+    if (
+      !label ||
+      !fullName ||
+      !phone ||
+      !street ||
+      !city ||
+      !province ||
+      !postalCode
+    ) {
+      return NextResponse.json(
+        { error: "Missing fields" },
+        { status: 400 }
+      );
     }
 
     const address = await prisma.address.create({
@@ -75,8 +97,13 @@ export async function POST(req: NextRequest) {
     });
 
     return NextResponse.json({ address });
+
   } catch (error) {
     console.error("POST ADDRESS ERROR:", error);
-    return NextResponse.json({ error: "Server error" }, { status: 500 });
+
+    return NextResponse.json(
+      { error: "Server error" },
+      { status: 500 }
+    );
   }
 }
