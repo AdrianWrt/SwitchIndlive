@@ -7,6 +7,7 @@ import { supabase } from '@/lib/supabaseClient'
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  
   const handleLogin = async () => {
     await supabase.auth.signInWithOAuth({
       provider: 'google',
@@ -62,7 +63,7 @@ export default function LoginPage() {
 
       <button
         type="button"
-        onClick={handleLogin}
+        onClick={() => signIn("google", { callbackUrl: "/" })}
         className="flex items-center justify-center gap-2 w-full py-2 rounded shadow hover:shadow-md transition-colors"
         style={{ backgroundColor: "#4285F4", color: "white" }}
       >

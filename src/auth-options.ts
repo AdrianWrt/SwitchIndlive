@@ -66,6 +66,21 @@ export const authOptions: NextAuthOptions = {
       return token;
     },
 
+    async signIn({ user }) {
+      if (!user.email) return false;
+    
+      await prisma.user.upsert({
+        where: { email: user.email },
+        update: {},
+        create: {
+          email: user.email,
+          name: user.name ?? "",
+        },
+      });
+    
+      return true;
+    },
+
     async session({ session, token }) {
       if (session.user) {
         session.user.id = token.id as string;
