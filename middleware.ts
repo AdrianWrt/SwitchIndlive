@@ -1,10 +1,9 @@
 import { auth } from "@/auth";
 
-export default auth((req) => {
+export default auth((req: any) => {
   try {
     const { pathname } = req.nextUrl;
 
-    // route bebas
     if (
       pathname.startsWith("/api") ||
       pathname.startsWith("/login") ||

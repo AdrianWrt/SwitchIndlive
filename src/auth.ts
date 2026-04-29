@@ -25,9 +25,9 @@ export const {
           select: { role: true },
         });
   
-        session.user.role = user?.role;
+        (session.user as any).role = user?.role;
       }
       return session;
     },
-  } 
+  }
 });
