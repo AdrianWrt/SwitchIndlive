@@ -2,20 +2,11 @@
 
 import { useState } from "react";
 import { signIn } from "next-auth/react";
-import { supabase } from '@/lib/supabaseClient'
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  
-  const handleLogin = async () => {
-    await supabase.auth.signInWithOAuth({
-      provider: 'google',
-      options: {
-        redirectTo: `${location.origin}`,
-      },
-    })
-  }
+
 
   async function handleCredentialsLogin(e: React.FormEvent) {
     e.preventDefault();
@@ -26,6 +17,10 @@ export default function LoginPage() {
       password,
       callbackUrl: "/",
     });
+
+    if (res?.error) {
+      console.log(res.error);
+    }
 
   }
   
