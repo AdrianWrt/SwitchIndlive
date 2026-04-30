@@ -7,35 +7,58 @@ export default function RegisterPage() {
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
 
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
+
   async function handleRegister() {
-    const res = await fetch("/api/register", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name, email, password }),
-    });
+    setLoading(true);
+    setMessage("");
 
-    if (!res.ok) {
-      alert("Registration failed");
-      return;
+    try {
+      const res = await fetch("/api/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, password }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        setMessage(data.error || "Registrasi gagal");
+        return;
+      }
+
+      setMessage(data.message || "Akun berhasil dibuat");
+      setEmail("");
+      setPassword("");
+      setName("");
+    } catch (err) {
+      setMessage("Terjadi kesalahan koneksi.");
+    } finally {
+      setLoading(false);
     }
-
-    alert("Account created. You can now log in.");
   }
 
   return (
     <main className="p-8 max-w-sm mx-auto space-y-4">
       <h1 className="text-2xl font-bold">Create Account</h1>
 
+      {message && (
+        <p className="text-sm text-red-500">{message}</p>
+      )}
+
       <input
         placeholder="Name"
         className="border p-2 w-full"
         onChange={(e) => setName(e.target.value)}
       />
+
       <input
         placeholder="Email"
         className="border p-2 w-full"
         onChange={(e) => setEmail(e.target.value)}
       />
+
       <input
         type="password"
         placeholder="Password"
@@ -45,9 +68,10 @@ export default function RegisterPage() {
 
       <button
         onClick={handleRegister}
-        className="bg-black text-white w-full py-2"
+        disabled={loading}
+        className="bg-black text-white w-full py-2 disabled:opacity-50"
       >
-        Create Account
+        {loading ? "Creating..." : "Create Account"}
       </button>
     </main>
   );
