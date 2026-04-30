@@ -62,12 +62,10 @@ export default function CartPage() {
             </div>
           ))}
 
-          {/* Total */}
           <div className="text-right text-2xl font-bold mt-6 text-blue-400">
             Total: Rp {total.toFixed(2)}
           </div>
 
-          {/* Checkout button */}
           <a
             href="/checkout"
             className="block text-center mt-6 bg-blue-500 hover:bg-blue-600 text-white py-3 rounded-xl font-semibold transition-colors"

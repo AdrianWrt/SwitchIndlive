@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { useCart } from "@/context/CartContext";
-import { placeOrder } from "./actions";
 
 type Address = {
   id: string;
@@ -20,7 +19,6 @@ export default function CheckoutClient() {
   const [addresses, setAddresses] = useState<Address[]>([]);
   const [selectedAddress, setSelectedAddress] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
-  const [addressId, setAddressId] = useState("");
 
   useEffect(() => {
     fetch("/api/addresses")
@@ -68,8 +66,6 @@ export default function CheckoutClient() {
       return;
     }
   }
-
-  
 
   return (
     <main className="p-8 max-w-3xl mx-auto text-white">

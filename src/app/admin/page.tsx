@@ -22,7 +22,6 @@ export default async function AdminDashboard() {
       </h1>
 
       <div className="max-w-3xl mx-auto grid grid-cols-1 sm:grid-cols-2 gap-8">
-        {/* Orders Link */}
         <Link
           href="/admin/orders"
           className="flex flex-col items-center justify-center p-8 bg-gray-800 rounded-xl shadow-lg hover:shadow-2xl transition-shadow hover:bg-gray-700"
@@ -31,7 +30,6 @@ export default async function AdminDashboard() {
           <span className="font-semibold text-xl">Manage Orders</span>
         </Link>
 
-        {/* Products Link */}
         <Link
           href="/admin/products"
           className="flex flex-col items-center justify-center p-8 bg-gray-800 rounded-xl shadow-lg hover:shadow-2xl transition-shadow hover:bg-gray-700"
