@@ -32,12 +32,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className="antialiased">
+    <html lang="en" className="bg-gray-900">
+      <body className="antialiased bg-gray-900 mih-h-screen">
         <Providers>
           <Header />
-
-
           {children}
         </Providers>
       </body>

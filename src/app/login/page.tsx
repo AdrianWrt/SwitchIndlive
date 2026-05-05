@@ -26,7 +26,7 @@ export default function LoginPage() {
   
 
   return (
-    <main className="p-8 bg-gray-900 max-w-sm mx-auto space-y-4">
+    <main className="p-8 max-w-sm mx-auto space-y-4">
       <h1 className="text-2xl font-bold text-center">Login</h1>
 
       <form onSubmit={handleCredentialsLogin} className="space-y-2">
