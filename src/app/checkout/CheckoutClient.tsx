@@ -68,7 +68,7 @@ export default function CheckoutClient() {
   }
 
   return (
-    <main className="p-8 max-w-3xl mx-auto text-white">
+    <main className="p-8 bg-gray-900 max-w-3xl mx-auto text-white">
       <h1 className="text-3xl font-bold mb-6">Checkout</h1>
 
       <section className="mb-8">
