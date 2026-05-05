@@ -41,7 +41,7 @@ export default function RegisterPage() {
 
   return (
     <main className="p-8 max-w-sm mx-auto space-y-4">
-      <h1 className="text-2xl font-bold">Create Account</h1>
+      <h1 className="text-2xl font-bold text-white">Create Account</h1>
 
       {message && (
         <p className="text-sm text-red-500">{message}</p>
@@ -49,20 +49,20 @@ export default function RegisterPage() {
 
       <input
         placeholder="Name"
-        className="border p-2 w-full"
+        className="border p-2 w-full text-white"
         onChange={(e) => setName(e.target.value)}
       />
 
       <input
         placeholder="Email"
-        className="border p-2 w-full"
+        className="border p-2 w-full text-white"
         onChange={(e) => setEmail(e.target.value)}
       />
 
       <input
         type="password"
         placeholder="Password"
-        className="border p-2 w-full"
+        className="border p-2 w-full text-white"
         onChange={(e) => setPassword(e.target.value)}
       />
 

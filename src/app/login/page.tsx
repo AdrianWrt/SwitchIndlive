@@ -27,23 +27,23 @@ export default function LoginPage() {
 
   return (
     <main className="p-8 max-w-sm mx-auto space-y-4">
-      <h1 className="text-2xl font-bold text-center">Login</h1>
+      <h1 className="text-2xl font-bold text-center text-white">Login</h1>
 
-      <form onSubmit={handleCredentialsLogin} className="space-y-2">
+      <form onSubmit={handleCredentialsLogin} className="space-y-2 text-white">
         <input
           type="email"
           placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="border p-2 w-full"
+          className="border p-2 w-full text-white"
           required
         />
-        <input
+        <input 
           type="password"
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="border p-2 w-full"
+          className="border p-2 w-full text-white"
           required
         />
         <button

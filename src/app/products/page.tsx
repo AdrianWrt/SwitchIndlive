@@ -42,13 +42,13 @@ export default function ProductsPage() {
   </main>
 
   return (
-    <div className="p-6">
+    <div className="p-6 text-white">
       <input
         type="text"
         placeholder="Search products..."
         value={search}
         onChange={(e) => setSearch(e.target.value)}
-        className="border p-2 rounded w-full mb-4"
+        className="border p-2 rounded w-full mb-4 text-white"
       />
 
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">

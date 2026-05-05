@@ -31,7 +31,7 @@ export default function ProductCard({ product }: { product: Product }) {
         </div>
 
         <div className="p-4">
-          <h2 className="font-semibold text-lg mb-1">{product.name}</h2>
+          <h2 className="font-semibold text-lg mb-1 text-white">{product.name}</h2>
           <p className="text-gray-400">Rp {product.price.toFixed(2)}</p>
         </div>
       </Link>
