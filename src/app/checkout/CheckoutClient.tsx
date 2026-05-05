@@ -80,7 +80,7 @@ export default function CheckoutClient() {
           <p>
             You have no saved addresses.  
             <a href="/account/addresses" className="text-blue-400 underline ml-1">
-              Add one here
+              Add Address
             </a>
           </p>
         ) : (
