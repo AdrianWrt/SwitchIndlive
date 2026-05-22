@@ -4,7 +4,7 @@ import { prisma } from "@/lib/prisma";
 
 export default async function HomePage() {
   const products = await prisma.product.findMany({
-    take: 6,
+    take: 10,
     orderBy: { createdAt: "desc" },
   });
 
