@@ -1,7 +1,6 @@
 "use client";
 
 import ProductCard from "@/components/ProductCard";
-import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Product } from "@prisma/client";
 
@@ -9,7 +8,6 @@ export default function ProductsPage() {
   const [products, setProducts] = useState<Product[]>([]);
   const [search, setSearch] = useState("");
 
-  const searchParams = useSearchParams();
 
   async function fetchProducts(query = "") {
     const res = await fetch(`/api/products?search=${query}`);
@@ -18,9 +16,11 @@ export default function ProductsPage() {
   }
 
   useEffect(() => {
-    const urlSearch = searchParams.get("search") || "";
-    setSearch(urlSearch);
-  }, [searchParams]);
+    const params = new URLSearchParams(window.location.search);
+    const searchValue = params.get("search") || "";
+  
+    setSearch(searchValue);
+  }, []);
 
   useEffect(() => {
     const delay = setTimeout(() => {
