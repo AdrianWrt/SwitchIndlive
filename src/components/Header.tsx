@@ -17,12 +17,41 @@ export default function Header() {
       </Link>
 
       <nav className="flex items-center gap-6">
-        <Link
-          href="/products"
-          className="hover:text-blue-300 transition-colors"
-        >
-          Products
-        </Link>
+        <div className="relative group py-2">
+          <button className="hover:text-blue-300 transition-colors">
+            Products ▾
+          </button>
+
+          <div className="absolute left-0 top-full mt-0 hidden group-hover:block bg-gray-800 rounded-lg shadow-lg min-w-[180px] z-50 overflow-hidden border border-gray-700">
+            <Link
+              href="/products"
+              className="block px-4 py-2 hover:bg-gray-700"
+            >
+              All Products
+            </Link>
+
+            <Link
+              href="/products?search=Linear"
+              className="block px-4 py-2 hover:bg-gray-700"
+            >
+              Linear
+            </Link>
+
+            <Link
+              href="/products?search=Tactile"
+              className="block px-4 py-2 hover:bg-gray-700"
+            >
+              Tactile
+            </Link>
+
+            <Link
+              href="/products?search=Clicky"
+              className="block px-4 py-2 hover:bg-gray-700"
+            >
+              Clicky
+            </Link>
+          </div>
+        </div>
 
         <Link
           href="/cart"
