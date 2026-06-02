@@ -27,7 +27,7 @@ export default function ProductDetailsClient({ product }: { product: Product }) 
 
         <div className="md:w-1/2 flex flex-col gap-4">
           <h1 className="text-4xl font-bold">{product.name}</h1>
-          <p className="text-gray-300">{product.description || "No description available."}</p>
+          <p className="text-gray-300 whitespace-pre-line">{product.description || "No description available."}</p>
           <p className="text-2xl font-semibold text-blue-500">Rp {product.price.toFixed(2)}</p>
 
           <div className="flex items-center gap-4 mt-4">
