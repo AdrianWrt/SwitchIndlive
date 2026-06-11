@@ -4,6 +4,7 @@ import Link from "next/link";
 import UserMenu from "./UserMenu";
 import { useCart } from "@/context/CartContext";
 import { useSession } from "next-auth/react";
+import { useState } from "react";
 
 export default function Header() {
   const { items } = useCart();
@@ -60,6 +61,7 @@ export default function Header() {
               Clicky
             </Link>
           </div>
+        )}
         </div>
 
         <Link
