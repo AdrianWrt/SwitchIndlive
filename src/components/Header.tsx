@@ -8,6 +8,7 @@ import { useSession } from "next-auth/react";
 export default function Header() {
   const { items } = useCart();
   const { data: session } = useSession();
+  const [openProducts, setOpenProducts] = useState(false);
   
 
   return (
@@ -17,12 +18,20 @@ export default function Header() {
       </Link>
 
       <nav className="flex items-center gap-6">
-        <div className="relative group py-2">
-          <button className="hover:text-blue-300 transition-colors">
-            Products ▾
-          </button>
+      <div
+        className="relative group"
+        onMouseEnter={() => setOpenProducts(true)}
+        onMouseLeave={() => setOpenProducts(false)}
+      >
+        <button
+          onClick={() => setOpenProducts(!openProducts)}
+          className="hover:text-blue-300 transition-colors"
+        >
+          Products ▾
+        </button>
 
-          <div className="absolute left-0 top-full mt-0 hidden group-hover:block bg-gray-800 rounded-lg shadow-lg min-w-[180px] z-50 overflow-hidden border border-gray-700">
+        {openProducts && (
+            <div className="absolute left-0 top-full bg-gray-800 rounded-lg shadow-lg min-w-[180px] z-50 border border-gray-700">
             <Link
               href="/products"
               className="block px-4 py-2 hover:bg-gray-700"
