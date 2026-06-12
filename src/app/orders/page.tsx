@@ -51,8 +51,8 @@ export default async function OrdersPage() {
               >
                 <div className="flex justify-between items-start mb-3">
                   <div>
-                    <p className="font-semibold text-lg">
-                      Order #{order.id}
+                    <p className="text-xs text-gray-500">
+                      Order ID: {order.id}
                     </p>
 
                     <p className="text-sm text-gray-400">
