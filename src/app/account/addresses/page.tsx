@@ -91,13 +91,25 @@ export default function AddressesPage() {
         <p>Loading…</p>
       ) : (
         <div className="space-y-4">
-          {addresses.map(a => (
-            <div key={a.id} className="border border-gray-700 p-4 rounded-lg bg-gray-900">
+          {addresses.map((a) => (
+            <div
+              key={a.id}
+              className="border border-gray-700 p-4 rounded-lg bg-gray-900"
+            >
               <p className="font-semibold">{a.label}</p>
               <p>{a.fullName}</p>
               <p>{a.street}, {a.city}</p>
               <p>{a.province} {a.postalCode}</p>
               <p>{a.phone}</p>
+
+              <div className="mt-3 flex gap-2">
+                <a
+                  href={`/account/addresses/${a.id}/edit`}
+                  className="bg-yellow-500 hover:bg-yellow-600 px-3 py-1 rounded text-sm"
+                >
+                  Edit
+                </a>
+              </div>
             </div>
           ))}
         </div>
