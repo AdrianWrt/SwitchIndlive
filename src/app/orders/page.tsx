@@ -49,8 +49,24 @@ export default async function OrdersPage() {
                 key={order.id}
                 className="bg-gray-800 p-4 rounded-xl shadow-lg hover:shadow-2xl transition-shadow"
               >
-                <div className="flex justify-between items-center mb-2">
-                  <p className="font-semibold text-lg">Order #{order.id}</p>
+                <div className="flex justify-between items-start mb-3">
+                  <div>
+                    <p className="font-semibold text-lg">
+                      Order #{order.id}
+                    </p>
+
+                    <p className="text-sm text-gray-400">
+                      Ordered on{" "}
+                      {new Date(order.createdAt).toLocaleString("id-ID", {
+                        day: "2-digit",
+                        month: "long",
+                        year: "numeric",
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })}
+                    </p>
+                  </div>
+
                   <p
                     className={`font-semibold px-2 py-1 rounded text-sm ${
                       order.status === "Pending"
