@@ -56,6 +56,7 @@ export default async function OrdersPage() {
                     </p>
 
                     <p className="text-sm text-gray-400">
+                      Ordered On{" "}
                       {new Date(order.createdAt).toLocaleString("id-ID", {
                         timeZone: "Asia/Jakarta",
                         day: "2-digit",
