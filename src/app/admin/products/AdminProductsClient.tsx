@@ -62,7 +62,7 @@ export default function AdminProductsClient() {
           <tr>
             <th className="border px-2 py-1">Name</th>
             <th className="border px-2 py-1">Price</th>
-            <th className="border px-2 py-1">Description</th> {/* ✅ added */}
+            <th className="border px-2 py-1">Description</th>
             <th className="border px-2 py-1">Image</th>
             <th className="border px-2 py-1">Actions</th>
           </tr>

@@ -43,11 +43,23 @@ export async function PUT(req: NextRequest) {
 
 
 export async function DELETE(req: NextRequest) {
-  const id = getIdFromUrl(req);
-  if (!id) return NextResponse.json({ error: "Missing product id" }, { status: 400 });
+  try {
+    const id = getIdFromUrl(req);
 
-  if (!(await isAdmin(req))) return NextResponse.json({ error: "Not authorized" }, { status: 403 });
+    await prisma.product.update({
+      where: { id },
+      data: {
+        isActive: false,
+      },
+    });
 
-  await prisma.product.delete({ where: { id } });
-  return NextResponse.json({ message: "Deleted" });
+    return NextResponse.json({
+      message: "Deleted",
+    });
+  } catch (error: any) {
+    return NextResponse.json(
+      { error: error.message },
+      { status: 500 }
+    );
+  }
 }

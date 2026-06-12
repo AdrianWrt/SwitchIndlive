@@ -6,6 +6,7 @@ export async function GET(req: NextRequest) {
 
   const products = await prisma.product.findMany({
     where: {
+      isActive: true,
       OR: [
         {
           name: {
