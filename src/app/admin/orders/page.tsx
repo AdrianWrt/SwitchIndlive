@@ -51,7 +51,7 @@ export default async function AdminOrdersPage() {
                 className="bg-gray-800 p-4 rounded-xl shadow-lg hover:shadow-2xl transition-shadow"
               >
                 <div className="flex justify-between items-center mb-2">
-                  <p className="text-xs text-gray-500">
+                  <p className="font-semibold text-lg">
                     Order ID: {order.id} — {order.user.name} ({order.user.email})
                   </p>
 

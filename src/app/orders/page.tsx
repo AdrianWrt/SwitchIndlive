@@ -51,19 +51,19 @@ export default async function OrdersPage() {
               >
                 <div className="flex justify-between items-start mb-3">
                   <div>
-                    <p className="text-xs text-gray-500">
+                    <p className="font-semibold text-lg">
                       Order ID: {order.id}
                     </p>
 
                     <p className="text-sm text-gray-400">
-                      Ordered on{" "}
                       {new Date(order.createdAt).toLocaleString("id-ID", {
+                        timeZone: "Asia/Jakarta",
                         day: "2-digit",
                         month: "long",
                         year: "numeric",
                         hour: "2-digit",
                         minute: "2-digit",
-                      })}
+                      })} WIB
                     </p>
                   </div>
 
