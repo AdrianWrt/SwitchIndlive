@@ -14,6 +14,8 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
+  
+
   const { addressId, items } = body;
 
   if (!items || items.length === 0) {
@@ -31,6 +33,25 @@ export async function POST(req: NextRequest) {
     id: { in: productIds },
     },
   });
+
+  const existingOrder = await prisma.order.findFirst({
+    where: {
+      userId: user!.id,
+      status: "Pending",
+      createdAt: {
+        gte: new Date(Date.now() - 60 * 1000),
+      },
+    },
+  });
+  
+  if (existingOrder) {
+    return NextResponse.json(
+      {
+        error: "Order already being processed",
+      },
+      { status: 409 }
+    );
+  }
 
   try {
 

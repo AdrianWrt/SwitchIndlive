@@ -19,6 +19,7 @@ export default function CheckoutClient() {
   const [addresses, setAddresses] = useState<Address[]>([]);
   const [selectedAddress, setSelectedAddress] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [processing, setProcessing] = useState(false);
 
   useEffect(() => {
     fetch("/api/addresses")
@@ -28,42 +29,52 @@ export default function CheckoutClient() {
   }, []);
 
   async function handleCheckout() {
+    if (processing) return;
+  
     if (!selectedAddress) {
       alert("Please select a shipping address.");
       return;
     }
-
-    const res = await fetch("/api/orders", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        addressId: selectedAddress,
-        items: items.map((i) => ({
-          id: i.id,
-          price: i.price,
-          quantity: i.quantity,
-        })),
-      }),
-    });
-
-
-    if (!res.ok) {
-      const text = await res.text();
-      alert(text || "Checkout failed");
-      return;
-    }
-
-    const data = await res.json();
-    console.log("ORDER RESPONSE:", data);
-    clearCart();
-    console.log("MIDTRANS URL:", data.redirect_url);
-
-    window.location.href = data.redirect_url;
-
-    if (!data.redirect_url) {
-      alert("Payment URL not found");
-      console.log(data);
-      return;
+  
+    try {
+      setProcessing(true);
+  
+      const res = await fetch("/api/orders", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          addressId: selectedAddress,
+          items: items.map((i) => ({
+            id: i.id,
+            price: i.price,
+            quantity: i.quantity,
+          })),
+        }),
+      });
+  
+      if (!res.ok) {
+        const text = await res.text();
+        alert(text || "Checkout failed");
+        return;
+      }
+  
+      const data = await res.json();
+  
+      if (!data.redirect_url) {
+        alert("Payment URL not found");
+        return;
+      }
+  
+      clearCart();
+  
+      window.location.href = data.redirect_url;
+    } catch (err) {
+      console.error(err);
+      alert("Checkout failed");
+    } finally {
+      setProcessing(false);
     }
   }
 
@@ -115,9 +126,21 @@ export default function CheckoutClient() {
 
       <button
         onClick={handleCheckout}
-        className="w-full bg-blue-500 hover:bg-blue-600 py-3 rounded-lg font-semibold"
+        disabled={processing}
+        className={`w-full py-3 rounded-lg font-semibold transition ${
+          processing
+            ? "bg-gray-600 cursor-not-allowed"
+            : "bg-blue-500 hover:bg-blue-600"
+        }`}
       >
-        Place Order
+        {processing ? (
+          <>
+            <span className="animate-spin inline-block mr-2">⟳</span>
+            Processing Payment...
+          </>
+        ) : (
+          "Place Order"
+        )}
       </button>
     </main>
   );

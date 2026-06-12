@@ -18,16 +18,19 @@ export default function ProductsPage() {
   const searchParams = useSearchParams();
   const switchInfo = {
     Linear: {
+      icon:"🎮",
       title: "Linear Switch",
       description:
         "Linear switch memiliki karakteristik penekanan yang halus tanpa tactile bump maupun suara klik. Jenis switch ini umumnya dipilih oleh gamer karena memberikan respons yang cepat dan konsisten.",
     },
     Tactile: {
+      icon:"⌨️",
       title: "Tactile Switch",
       description:
         "Tactile switch memiliki tactile bump pada titik aktuasi sehingga pengguna dapat merasakan saat tombol berhasil ditekan. Jenis ini cocok untuk mengetik dan penggunaan sehari-hari.",
     },
     Clicky: {
+      icon:"🔊",
       title: "Clicky Switch",
       description:
         "Clicky switch menghasilkan suara klik yang jelas saat ditekan. Jenis switch ini banyak digunakan oleh pengguna yang menyukai pengalaman mengetik yang lebih responsif dan memberikan umpan balik suara.",
@@ -89,6 +92,7 @@ export default function ProductsPage() {
       {currentType && (
         <div className="mb-8 p-6 bg-gray-800 rounded-xl border border-gray-700">
           <h2 className="text-2xl font-bold text-blue-400 mb-2">
+            {switchInfo[currentType as keyof typeof switchInfo].icon}{" "}
             {switchInfo[currentType as keyof typeof switchInfo].title}
           </h2>
 
