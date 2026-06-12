@@ -2,6 +2,8 @@ import { prisma } from "@/lib/prisma";
 import Link from "next/link";
 import DeleteProductButton from "@/components/DeleteProductButton";
 
+export const dynamic = "force-dynamic";
+
 export default async function AdminProductsPage() {
   const products = await prisma.product.findMany();
 
