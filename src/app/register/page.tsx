@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function RegisterPage() {
   const [email, setEmail] = useState("");
@@ -9,6 +10,8 @@ export default function RegisterPage() {
 
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
+
+  const router = useRouter();
 
   async function handleRegister() {
     setLoading(true);
@@ -37,6 +40,8 @@ export default function RegisterPage() {
     } finally {
       setLoading(false);
     }
+
+    router.push("/login");
   }
 
   return (
