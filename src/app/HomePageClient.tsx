@@ -113,12 +113,12 @@ export default function HomePageClient({ products }: { products: Product[] }) {
       <section className="p-12">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
           <div className="p-6 bg-gray-800 rounded-lg">
-            <h3 className="font-bold text-xl mb-2 text-white">Fast Shipping</h3>
-            <p className="text-gray-300">Get your orders delivered quickly and safely.</p>
+            <h3 className="font-bold text-xl mb-2 text-white">New Products</h3>
+            <p className="text-gray-300">Bringing you the newest products.</p>
           </div>
           <div className="p-6 bg-gray-800 rounded-lg">
-            <h3 className="font-bold text-xl mb-2 text-white">Easy Returns</h3>
-            <p className="text-gray-300">Hassle-free returns if you’re not satisfied.</p>
+            <h3 className="font-bold text-xl mb-2 text-white">Cheap Prices</h3>
+            <p className="text-gray-300">We tried our best to bring you products at cheaper prices.</p>
           </div>
           <div className="p-6 bg-gray-800 rounded-lg">
             <h3 className="font-bold text-xl mb-2 text-white">Secure Payments</h3>
@@ -130,8 +130,8 @@ export default function HomePageClient({ products }: { products: Product[] }) {
       <footer className="bg-gray-950 text-gray-300 p-6 text-center">
         <p>&copy; {new Date().getFullYear()} SwitchInd. All rights reserved.</p>
         <div className="flex justify-center gap-4 mt-2">
-          <Link href="#" className="hover:underline">About</Link>
-          <Link href="#" className="hover:underline">Contact</Link>
+          <Link href="/about" className="hover:underline">About</Link>
+          <Link href="/contact" className="hover:underline">Contact</Link>
         </div>
       </footer>
 
